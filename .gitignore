@@ -102,3 +102,8 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Custom
+test_token.json
+config/config.json
+test_token.json

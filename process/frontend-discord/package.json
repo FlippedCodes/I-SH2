@@ -1,0 +1,6 @@
+{
+    "name": "@process/frontend-discord",
+    "scripts": {
+        "start": "node index.js"
+    }
+}
