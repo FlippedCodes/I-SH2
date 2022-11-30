@@ -1,0 +1,76 @@
+version: '3.3'
+services:
+  discord_ish:
+    build:
+      context: ./process/discord/
+    depends_on:
+      - rabbitmq_ish
+    restart: unless-stopped
+    environment:
+      discordToken: ${DISCORD_TOKEN}
+      rabbitMqHost: rabbitmq_ish
+      rabbitMqUser: ${RABBITMQ_USERNAME}
+      rabbitMqPW: ${RABBITMQ_PASSWORD}
+
+  # telegram_ish:
+  #   build:
+  #     context: ./process/telegram/
+  #   depends_on:
+  #     - rabbitmq_ish
+  #   restart: unless-stopped
+  #   environment:
+  #     telegramToken: ${TELEGRAM_TOKEN}
+  #     rabbitMqHost: rabbitmq_ish
+  #     rabbitMqUser: ${RABBITMQ_USERNAME}
+  #     rabbitMqPW: ${RABBITMQ_PASSWORD}
+
+  # guilded_ish:
+  #   build:
+  #     context: ./process/guilded/
+  #   depends_on:
+  #     - rabbitmq_ish
+  #   restart: unless-stopped
+  #   environment:
+  #     guildedToken: ${GUILDED_TOKEN}
+  #     rabbitMqHost: rabbitmq_ish
+  #     rabbitMqUser: ${RABBITMQ_USERNAME}
+  #     rabbitMqPW: ${RABBITMQ_PASSWORD}
+
+  enrichment_ish:
+    build:
+      context: ./process/enrichment-server/
+    depends_on:
+      - rabbitmq_ish
+      - db_ish
+    restart: always
+    environment:
+      rabbitMqHost: rabbitmq_ish
+      rabbitMqUser: ${RABBITMQ_USERNAME}
+      rabbitMqPW: ${RABBITMQ_PASSWORD}
+
+  rabbitmq_ish:
+    image: rabbitmq:3.11-management
+    restart: always
+    # ports:
+    #   - "15672:15672" # mgmt port
+
+  db_ish:
+    image: mariadb:latest
+    restart: always
+    ports:
+      - "${DB_PORT}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD_ROOT}
+      MYSQL_DATABASE: ish
+      MYSQL_USER: ish
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+
+volumes:
+  db_data:
+
+networks:
+  default:
+    external:
+      name: nginx_backend

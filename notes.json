@@ -1,0 +1,65 @@
+// plattform-command to server
+{
+  "plattform": "discord",
+  "type": "command",
+  "meta": {
+    "channelDetails": "discordChannelObject"
+  },
+  "content": {
+    "commandName": "hub",
+    "subcommand": "add",
+    "args": {
+      "name": "myHubConnection"
+    }
+  }
+}
+
+// server to plattform-command
+{
+  "plattform": "discord",
+  "type": "command",
+  "meta": {
+    "channelDetails": "discordChannelObject"
+  },
+  "content": {
+    "commandName": "hub",
+    "subcommand": "add",
+    "args": {
+      "name": "myHubConnection"
+    }
+  },
+  "reply": {
+    "success": true,
+    "message": "Successfully created!"
+  }
+}
+
+// ############################################################
+
+// plattform-message to server
+{
+  "plattform": "discord",
+  "type": "message",
+  "meta": {
+    "channelDetails": "discordChannelObject"
+  },
+  "content": {
+    "message": "discordMessageContent"
+  }
+}
+
+// server to plattform-message
+{
+  "plattform": "discord",
+  "type": "message",
+  "meta": {
+    "channelDetails": "discordChannelObject"
+  },
+  "content": {
+    "message": "discordMessageContent"
+  },
+  "reply": {
+    "success": true,
+    "message": "message wordwarded (deosnt get posted to user/can be blank)"
+  }
+}

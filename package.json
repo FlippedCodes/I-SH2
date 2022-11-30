@@ -1,11 +1,19 @@
 {
-  "name": "i-sh",
+  "name": "i-sh2",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "libraries/*",
-    "processes/*"
-  ]
+    "library/*",
+    "process/*"
+  ],
+  "dependencies": {
+    "amqplib": "^0.10.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2"
+  }
 }
