@@ -51,21 +51,22 @@ services:
   #     DBUser: ish
   #     DBPW: ${DB_PASSWORD}
 
-  enrichment_ish:
-    build:
-      context: ./process/enrichment-server/
-    depends_on:
-      - rabbitmq_ish
-      - db_ish
-    restart: always
-    environment:
-      rabbitMqHost: rabbitmq_ish
-      rabbitMqUser: ${RABBITMQ_USERNAME}
-      rabbitMqPW: ${RABBITMQ_PASSWORD}
-      DBHost: db_ish
-      DBDatabase: ish
-      DBUser: ish
-      DBPW: ${DB_PASSWORD}
+  # DEPRECATED: Ever service wil handle the rabbitmq connection individually.
+  # enrichment_ish:
+  #   build:
+  #     context: ./process/enrichment-server/
+  #   depends_on:
+  #     - rabbitmq_ish
+  #     - db_ish
+  #   restart: always
+  #   environment:
+  #     rabbitMqHost: rabbitmq_ish
+  #     rabbitMqUser: ${RABBITMQ_USERNAME}
+  #     rabbitMqPW: ${RABBITMQ_PASSWORD}
+  #     DBHost: db_ish
+  #     DBDatabase: ish
+  #     DBUser: ish
+  #     DBPW: ${DB_PASSWORD}
 
   rabbitmq_ish:
     image: rabbitmq:3.11-management
