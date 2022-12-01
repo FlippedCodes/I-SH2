@@ -5,36 +5,51 @@ services:
       context: ./process/discord/
     depends_on:
       - rabbitmq_ish
+      - db_ish
     restart: unless-stopped
     environment:
       discordToken: ${DISCORD_TOKEN}
       rabbitMqHost: rabbitmq_ish
       rabbitMqUser: ${RABBITMQ_USERNAME}
       rabbitMqPW: ${RABBITMQ_PASSWORD}
+      DBHost: db_ish
+      DBDatabase: ish
+      DBUser: ish
+      DBPW: ${DB_PASSWORD}
 
   # telegram_ish:
   #   build:
   #     context: ./process/telegram/
   #   depends_on:
   #     - rabbitmq_ish
+  #     - db_ish
   #   restart: unless-stopped
   #   environment:
   #     telegramToken: ${TELEGRAM_TOKEN}
   #     rabbitMqHost: rabbitmq_ish
   #     rabbitMqUser: ${RABBITMQ_USERNAME}
   #     rabbitMqPW: ${RABBITMQ_PASSWORD}
+  #     DBHost: db_ish
+  #     DBDatabase: ish
+  #     DBUser: ish
+  #     DBPW: ${DB_PASSWORD}
 
   # guilded_ish:
   #   build:
   #     context: ./process/guilded/
   #   depends_on:
   #     - rabbitmq_ish
+  #     - db_ish
   #   restart: unless-stopped
   #   environment:
   #     guildedToken: ${GUILDED_TOKEN}
   #     rabbitMqHost: rabbitmq_ish
   #     rabbitMqUser: ${RABBITMQ_USERNAME}
   #     rabbitMqPW: ${RABBITMQ_PASSWORD}
+  #     DBHost: db_ish
+  #     DBDatabase: ish
+  #     DBUser: ish
+  #     DBPW: ${DB_PASSWORD}
 
   enrichment_ish:
     build:
@@ -47,6 +62,10 @@ services:
       rabbitMqHost: rabbitmq_ish
       rabbitMqUser: ${RABBITMQ_USERNAME}
       rabbitMqPW: ${RABBITMQ_PASSWORD}
+      DBHost: db_ish
+      DBDatabase: ish
+      DBUser: ish
+      DBPW: ${DB_PASSWORD}
 
   rabbitmq_ish:
     image: rabbitmq:3.11-management
