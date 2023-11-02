@@ -21,7 +21,7 @@ services:
       - db
     restart: always
     environment:
-      rabbitMqHost: rabbitmq_ish
+      rabbitMqHost: rabbitmq
       rabbitMqUser: ${RABBITMQ_USERNAME}
       rabbitMqPW: ${RABBITMQ_PASSWORD}
       apiToken: ${API_TOKEN}
