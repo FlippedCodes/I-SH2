@@ -1,0 +1,14 @@
+{
+  "name": "@process/discord",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/builders": "^1.4.0",
+    "bufferutil": "^4.0.7",
+    "discord.js": "^14.7.0",
+    "dotenv": "^16.0.3",
+    "utf-8-validate": "^5.0.10"
+  }
+}
