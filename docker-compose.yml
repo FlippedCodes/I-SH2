@@ -1,80 +1,43 @@
 version: '3.3'
 services:
-  discord_ish:
+  discord:
     build:
-      context: ./process/discord/
+      context: ./src/services/discord/
     depends_on:
-      - rabbitmq_ish
-      - db_ish
+      - rabbitmq
+      - api
     restart: unless-stopped
     environment:
       discordToken: ${DISCORD_TOKEN}
+      apiToken: ${API_TOKEN}
+      rabbitMqHost: rabbitmq
+      rabbitMqUser: ${RABBITMQ_USERNAME}
+      rabbitMqPW: ${RABBITMQ_PASSWORD}
+
+  api:
+    build:
+      context: ./process/enrichment-server/
+    depends_on:
+      - db
+    restart: always
+    environment:
       rabbitMqHost: rabbitmq_ish
       rabbitMqUser: ${RABBITMQ_USERNAME}
       rabbitMqPW: ${RABBITMQ_PASSWORD}
-      DBHost: db_ish
+      apiToken: ${API_TOKEN}
+      DBDialect: mariadb
+      DBHost: db
       DBDatabase: ish
       DBUser: ish
-      DBPW: ${DB_PASSWORD}
+      DBPassword: ${DB_PASSWORD}
 
-  # telegram_ish:
-  #   build:
-  #     context: ./process/telegram/
-  #   depends_on:
-  #     - rabbitmq_ish
-  #     - db_ish
-  #   restart: unless-stopped
-  #   environment:
-  #     telegramToken: ${TELEGRAM_TOKEN}
-  #     rabbitMqHost: rabbitmq_ish
-  #     rabbitMqUser: ${RABBITMQ_USERNAME}
-  #     rabbitMqPW: ${RABBITMQ_PASSWORD}
-  #     DBHost: db_ish
-  #     DBDatabase: ish
-  #     DBUser: ish
-  #     DBPW: ${DB_PASSWORD}
-
-  # guilded_ish:
-  #   build:
-  #     context: ./process/guilded/
-  #   depends_on:
-  #     - rabbitmq_ish
-  #     - db_ish
-  #   restart: unless-stopped
-  #   environment:
-  #     guildedToken: ${GUILDED_TOKEN}
-  #     rabbitMqHost: rabbitmq_ish
-  #     rabbitMqUser: ${RABBITMQ_USERNAME}
-  #     rabbitMqPW: ${RABBITMQ_PASSWORD}
-  #     DBHost: db_ish
-  #     DBDatabase: ish
-  #     DBUser: ish
-  #     DBPW: ${DB_PASSWORD}
-
-  # DEPRECATED: Ever service wil handle the rabbitmq connection individually.
-  # enrichment_ish:
-  #   build:
-  #     context: ./process/enrichment-server/
-  #   depends_on:
-  #     - rabbitmq_ish
-  #     - db_ish
-  #   restart: always
-  #   environment:
-  #     rabbitMqHost: rabbitmq_ish
-  #     rabbitMqUser: ${RABBITMQ_USERNAME}
-  #     rabbitMqPW: ${RABBITMQ_PASSWORD}
-  #     DBHost: db_ish
-  #     DBDatabase: ish
-  #     DBUser: ish
-  #     DBPW: ${DB_PASSWORD}
-
-  rabbitmq_ish:
+  rabbitmq:
     image: rabbitmq:3.11-management
     restart: always
     # ports:
     #   - "15672:15672" # mgmt port
 
-  db_ish:
+  db:
     image: mariadb:latest
     restart: always
     ports:
@@ -86,11 +49,7 @@ services:
       MYSQL_DATABASE: ish
       MYSQL_USER: ish
       MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: true
 
 volumes:
   db_data:
-
-networks:
-  default:
-    external:
-      name: nginx_backend
