@@ -25,6 +25,7 @@ services:
       rabbitMqUser: ${RABBITMQ_USERNAME}
       rabbitMqPW: ${RABBITMQ_PASSWORD}
       apiToken: ${API_TOKEN}
+      port: 3000
       DBDialect: mariadb
       DBHost: db
       DBDatabase: ish

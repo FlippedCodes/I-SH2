@@ -4,6 +4,8 @@ import morgan from 'morgan';
 
 import cors from 'cors';
 
+import { hostname } from 'os';
+
 import { connectDB } from './database/connect';
 
 import { initModels } from './database/models/init-models';
@@ -20,9 +22,12 @@ if (DEBUG) app.use(morgan('dev'));
 
 app.use(
   cors({
-    origin: ["http://localhost:3333"],
+    origin: [
+      `http://localhost:${process.env.port}`,
+      `http://${hostname()}:${process.env.port}`,
+    ],
     credentials: true,
-  })
+  }),
 );
 
 // main API v1
@@ -47,8 +52,9 @@ await sequelize.sync({ force: false });
 await console.log("🛢️Synced database successfully!");
 
 // startup api
-app.listen(3333, async () => {
-  console.log("🚀Server started successfully!");
+app.listen(process.env.port, async () => {
+  const endpoint = `http://${hostname() || 'localhost'}:${process.env.port}`;
+  console.log(`🚀 Server started successfully on ${endpoint}!`);
 });
 
 export default DEBUG;
