@@ -10,7 +10,7 @@ import { connectDB } from './database/connect';
 
 import { initModels } from './database/models/init-models';
 
-import { router } from './routes/v1/index';
+import v1 from './routes/v1/index';
 
 const DEBUG = process.env.NODE_ENV === 'development';
 
@@ -31,15 +31,15 @@ app.use(
 );
 
 // main API v1
-app.use("/v1", router);
-app.use("/stable", router);
+app.use('/v1', v1);
+app.use('/stable', v1);
 
 // latest API release
 // app.use("/latest", router);
 
-app.all("*", (req, res) => {
+app.all('*', (req, res) => {
   res.status(404).json({
-    status: "error",
+    status: 'error',
     message: `Route: ${req.originalUrl} does not exist on this server`,
   });
 });
@@ -49,7 +49,7 @@ app.all("*", (req, res) => {
 const sequelize = await connectDB(DEBUG);
 await initModels(sequelize);
 await sequelize.sync({ force: false });
-await console.log("🛢️Synced database successfully!");
+await console.log('🛢️ Synced database successfully!');
 
 // startup api
 app.listen(process.env.port, async () => {
