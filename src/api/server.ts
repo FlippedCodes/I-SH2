@@ -6,7 +6,7 @@ import cors from 'cors';
 
 import { hostname } from 'os';
 
-import { connectDB } from './database/connect';
+import connectDB from './database/connect';
 
 import { initModels } from './database/models/init-models';
 

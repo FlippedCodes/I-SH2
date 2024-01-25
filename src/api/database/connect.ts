@@ -1,7 +1,7 @@
 import { Sequelize, Options } from 'sequelize';
 
 // sequelize connect
-export const connectDB = (DEBUG: boolean) => new Sequelize(
+const connectDB = (DEBUG: boolean) => new Sequelize(
   process.env.DBDatabase,
   process.env.DBUser,
   process.env.DBPassword,
@@ -12,3 +12,5 @@ export const connectDB = (DEBUG: boolean) => new Sequelize(
     logging: DEBUG,
   },
 );
+
+export default connectDB;
