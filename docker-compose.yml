@@ -16,14 +16,11 @@ services:
 
   api:
     build:
-      context: ./process/enrichment-server/
+      context: ./src/api/
     depends_on:
       - db
     restart: always
     environment:
-      rabbitMqHost: rabbitmq
-      rabbitMqUser: ${RABBITMQ_USERNAME}
-      rabbitMqPW: ${RABBITMQ_PASSWORD}
       apiToken: ${API_TOKEN}
       port: 3000
       DBDialect: mariadb
@@ -31,6 +28,9 @@ services:
       DBDatabase: ish
       DBUser: ish
       DBPassword: ${DB_PASSWORD}
+      rabbitMqHost: rabbitmq
+      rabbitMqUser: ${RABBITMQ_USERNAME}
+      rabbitMqPW: ${RABBITMQ_PASSWORD}
 
   rabbitmq:
     image: rabbitmq:3.11-management
@@ -50,7 +50,7 @@ services:
       MYSQL_DATABASE: ish
       MYSQL_USER: ish
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_RANDOM_ROOT_PASSWORD: true
+      # MYSQL_RANDOM_ROOT_PASSWORD: true
 
 volumes:
   db_data:
