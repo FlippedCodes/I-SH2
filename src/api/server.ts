@@ -30,6 +30,8 @@ app.use(
   }),
 );
 
+// TODO: Add API token identifier
+
 // main API v1
 app.use('/v1', v1);
 app.use('/stable', v1);
