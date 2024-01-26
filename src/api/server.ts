@@ -37,7 +37,7 @@ app.use('/v1', v1);
 app.use('/stable', v1);
 
 // latest API release
-// app.use("/latest", router);
+// app.use("/latest", v2);
 
 app.all('*', (req, res) => {
   res.status(404).json({
