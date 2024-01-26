@@ -16,14 +16,20 @@ The concept is to make a modular ecosystem in a monorepo to dynamic add or remov
       - [Endpoints and Versioning](#endpoints-and-versioning)
       - [`/v1`](#v1)
         - [API Token](#api-token)
-        - [`/app` - Services](#app---services)
-          - [Identifier](#identifier)
+        - [Identifier](#identifier)
+        - [`/apps` - Services](#apps---services)
           - [Supported Features](#supported-features)
           - [GET](#get)
-        - [`/app/:identifier` - Service](#appidentifier---service)
-          - [GET](#get-1)
           - [POST](#post)
+        - [`/apps/:identifier` - Individual Service](#appsidentifier---individual-service)
+          - [GET](#get-1)
           - [DELETE](#delete)
+        - [`/hubs` - Search Hubs](#hubs---search-hubs)
+          - [GET](#get-2)
+          - [POST](#post-1)
+        - [`/hubs/:hubId` - Hub](#hubshubid---hub)
+          - [GET](#get-3)
+          - [PUT](#put)
     - [Database](#database)
       - [App feature list](#app-feature-list)
       - [Diagram](#diagram)
@@ -59,7 +65,7 @@ Before creating a bot for your favorite chat platform, make sure to suggest it f
 
 #### Endpoints and Versioning
 
-The endpoint will be reachable on `http://COTNAINERNAME:3000`. The API will try to get the hostname and post it into the logs.
+The endpoint will be reachable on `http://CONTAINERNAME:3000`. The API will try to get the hostname and post it into the logs.
 
 It might be a little overkill, but it might be for the better with multiple services getting developed independently. So dynamic upgrades should be easier.
 
@@ -69,13 +75,13 @@ It might be a little overkill, but it might be for the better with multiple serv
 
 The API token is the same for all apps and just exists as a security measure. It needs to be send with every request in the `Authorization` header.
 
-##### `/app` - Services
-
-Every app that uses the DB needs to register so other apps know what features it supports and identify the Database entries belonging to that service.
-
-###### Identifier
+##### Identifier
 
 A unique identifier name will be used, like `discord`, `signal` or `telegram` and is needed to be passed along with each API request. This helps services and RabbitMQ to identify each other.
+
+##### `/apps` - Services
+
+Every app that uses the DB needs to register so other apps know what features it supports and identify the Database entries belonging to that service.
 
 ###### Supported Features
 
@@ -84,25 +90,6 @@ As not all chat platforms are not created equally or are not done yet each app h
 ###### GET
 
 Get list of all registered apps.
-
-##### `/app/:identifier` - Service
-
-###### GET
-
-Get one app details and supported features.
-
-Response:
-
-```json
-{
-  "id": 0,
-  "name": "APPNAME",
-  "features": {
-    "featureX": true,
-    "featureY": 0
-  }
-}
-```
 
 ###### POST
 
@@ -113,7 +100,7 @@ Validation:
   - Lowercase
   - Only letters and numbers
 - `features`
-  - Not all features need to be named. Defaults to false/lowest value.
+  - Not all features need to be named. Defaults can be found [here](#app-feature-list)
 
 Body:
 
@@ -140,12 +127,161 @@ Response:
 }
 ```
 
+##### `/apps/:identifier` - Individual Service
+
+###### GET
+
+Get one app details and supported features.
+
+Response:
+
+```json
+{
+  [
+    {
+      "id": 0,
+      "name": "APPNAME",
+      "features": {
+        "featureX": true,
+        "featureY": 0
+      }
+    },
+    ...
+  ]
+}
+```
+
 ###### DELETE
 
 Remove service when it is no longer being used. For this to work, the `delaunch` flag needs to be set to true.
 
 > [!CAUTION]
 > This removes ALL entries in the Database that where connected to the Service!
+
+##### `/hubs` - Search Hubs
+
+###### GET
+
+Get a list of hubs a user owns.
+
+Query parameters:
+
+| Parameters   | Type   | Optional | Default value | Description                                              |
+| ------------ | ------ | -------- | ------------- | -------------------------------------------------------- |
+| `identifier` | string | ❌        |               | Identifier of the platform/app.                          |
+| `ownerId`    | string | ❌        |               | The user id of the list of hubs that is being requested. |
+
+Response:
+
+```json
+{
+  [
+    {
+      "id": 0,
+      "name": "HUBNAME",
+    },
+    ...
+  ]
+}
+```
+
+###### POST
+
+Register or update app.
+
+Validation:
+
+- `name`
+  - No spaces
+  - Needs to be unique
+- `ownerAppIdentifier`
+  - App needs to exist
+
+Body:
+
+```json
+{
+  "name": "HUBNAME",
+  "ownerID": "OWNERID",
+  "ownerAppIdentifier": "identifier",
+  "hubSettings": {
+    "allowInvites": true
+  }
+}
+```
+
+Response:
+
+```json
+{
+  "id": 0,
+  "name": "HUBNAME",
+  "ownerID": "OWNERID",
+  "ownerAppIdentifier": "identifier",
+  "hubSettings": {
+    "allowInvites": true
+  }
+}
+```
+
+##### `/hubs/:hubId` - Hub
+
+###### GET
+
+Get hub details and settings
+
+Response:
+
+```json
+{
+  "id": 0,
+  "name": "HUBNAME",
+  "ownerID": "OWNERID",
+  "ownerAppIdentifier": "identifier",
+  "hubSettings": {
+    "allowInvites": true
+  }
+}
+```
+
+###### PUT
+
+Set hub details and settings of existing hub.
+
+Validation:
+
+- `name`
+  - No spaces
+  - Needs to be unique
+- `ownerAppIdentifier`
+  - App needs to exist
+
+Body:
+
+```json
+{
+  "name": "HUBNAME",
+  "ownerID": "OWNERID",
+  "ownerAppIdentifier": "identifier",
+  "hubSettings": {
+    "allowInvites": false
+  }
+}
+```
+
+Response:
+
+```json
+{
+  "id": 0,
+  "name": "HUBNAME",
+  "ownerID": "OWNERID",
+  "ownerAppIdentifier": "identifier",
+  "hubSettings": {
+    "allowInvites": false
+  }
+}
+```
 
 ### Database
 
@@ -155,19 +291,21 @@ Before I get any comments on how cursed this DB looks: Sequelize (and TS) is not
 
 The list of features is hardcoded and needs to be extended, if new features get relevant.
 
-| Name                | Type    | Optional | Default value | Description                                                                                                                                       |
-| ------------------- | ------- | -------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `contentOffloading` | boolean | ❌        |               | The platform allows user content to be shared to other platforms without breaching the ToS for both services.                                     |
-| `textLength`        | int     | ❌        |               |                                                                                                                                                   |
-| `trackMessage`      | boolean | ✅        | `false`       | If the original or imposter message gets deleted, the bot can track that and send it to other platforms.                                          |
-| `deleteMessage`     | boolean | ✅        | `false`       | Platform allows message deletion **of other users**.                                                                                              |
-| `deleteMessageTime` | int     | ✅        | `0`           | Some platforms only allow deletion of messages for a certain time, before being locked for bots to delete them. The value is in days              |
-| `inviteLinks`       | boolean | ✅        | `false`       | It is possible to invite someone through a link. (Links under each embedded message.)                                                             |
-| `webhookSupport`    | boolean | ✅        | `false`       | Allows embedding of username and profile picture to "impersonate" a user.                                                                         |
-| `media`             | boolean | ✅        | `false`       |                                                                                                                                                   |
-| `mediaStickers`     | boolean | ✅        | `false`       |                                                                                                                                                   |
-| `mediaEmojis`       | boolean | ✅        | `false`       |                                                                                                                                                   |
-| `delaunched`        | boolean | ✅        | `false`       | When a service gets delaunched from I-SH2. Can only be set to true, when the service doesn't have a queue open.                                   |
+| Name                | Type    | Optional | Default value | Description                                                                                                                           |
+| ------------------- | ------- | -------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `tos`               | string  | ❌        |               | Link to the terms of service that gets sent to the end user.                                                                          |
+| `privacyPolicy`     | string  | ❌        |               | Link to the privacy policy that gets sent to the end user.                                                                            |
+| `contentOffloading` | boolean | ❌        |               | The platform allows user content to be shared to other platforms without breaching the ToS for both services.                         |
+| `textLength`        | int     | ❌        |               |                                                                                                                                       |
+| `trackMessage`      | boolean | ✅        | `false`       | If the original or imposter message gets deleted, the bot can track that and send it to other platforms.                              |
+| `deleteMessage`     | boolean | ✅        | `false`       | Platform allows message deletion **of other users**.                                                                                  |
+| `deleteMessageTime` | int     | ✅        | `0`           | Some platforms only allow deletion of messages for a certain time, before being locked for bots to delete them. The value is in days. |
+| `inviteLinks`       | boolean | ✅        | `false`       | It is possible to invite someone through a link. (Links under each embedded message.)                                                 |
+| `webhookSupport`    | boolean | ✅        | `false`       | Allows embedding of username and profile picture to "impersonate" a user.                                                             |
+| `media`             | boolean | ✅        | `false`       |                                                                                                                                       |
+| `mediaStickers`     | boolean | ✅        | `false`       |                                                                                                                                       |
+| `mediaEmojis`       | boolean | ✅        | `false`       |                                                                                                                                       |
+| `delaunched`        | boolean | ✅        | `false`       | When a service gets delaunched from I-SH2. Can only be set to true, when the service doesn't have a queue open.                       |
 
 #### Diagram
 
