@@ -2,7 +2,7 @@
 
 The concept is to make a modular ecosystem in a monorepo to dynamic add or remove difference instant messaging services with the goal to connect channels or groups together.
 
-> [!Warning]
+> [!IMPORTANT]
 > This is a very WIP project. I (Phil) will focus first of implementing all existing features from I-SH1 Discord-Only implementation.
 
 ## Table on Contents
@@ -144,7 +144,7 @@ Response:
 
 Remove service when it is no longer being used. For this to work, the `delaunch` flag needs to be set to true.
 
-> [!Attention]
+> [!CAUTION]
 > This removes ALL entries in the Database that where connected to the Service!
 
 ### Database
