@@ -70,7 +70,7 @@ export class userBlocks extends Model<userBlocksAttributes, userBlocksCreationAt
         primaryKey: true,
       },
       userID: {
-        type: DataTypes.TEXT,
+        type: DataTypes.TEXT('tiny'),
         allowNull: false,
       },
       appID: {
@@ -98,7 +98,7 @@ export class userBlocks extends Model<userBlocksAttributes, userBlocksCreationAt
         },
       },
       reason: {
-        type: DataTypes.TEXT,
+        type: DataTypes.TEXT('tiny'),
         allowNull: false,
       },
       acknowledged: {

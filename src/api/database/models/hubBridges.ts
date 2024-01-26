@@ -98,7 +98,7 @@ export class hubBridges extends Model<hubBridgesAttributes, hubBridgesCreationAt
         comment: "TINYTEXT can't be used as a pimary",
       },
       additionalData: {
-        type: DataTypes.TEXT,
+        type: DataTypes.JSON,
         allowNull: false,
       },
       appID: {

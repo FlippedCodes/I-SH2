@@ -59,7 +59,7 @@ export class messageLinks extends Model<messageLinksAttributes, messageLinksCrea
         },
       },
       linkID: {
-        type: DataTypes.TEXT,
+        type: DataTypes.TEXT('tiny'),
         allowNull: false,
       },
       appID: {

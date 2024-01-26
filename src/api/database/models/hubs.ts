@@ -99,12 +99,12 @@ export class hubs extends Model<hubsAttributes, hubsCreationAttributes> implemen
         primaryKey: true,
       },
       name: {
-        type: DataTypes.TEXT,
+        type: DataTypes.TEXT('tiny'),
         allowNull: false,
         unique: 'name',
       },
       ownerID: {
-        type: DataTypes.TEXT,
+        type: DataTypes.TEXT('tiny'),
         allowNull: false,
       },
       appID: {

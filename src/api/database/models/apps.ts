@@ -8,7 +8,10 @@ import type { userBlocks, userBlocksId } from './userBlocks';
 export interface appsAttributes {
   id: number;
   name: string;
-  feature1: string;
+  trackMessage: boolean;
+  deleteMessage: boolean;
+  webhookSupport: boolean;
+  inviteLinks: boolean;
 }
 
 export type appsPk = 'id';
@@ -21,7 +24,13 @@ export class apps extends Model<appsAttributes, appsCreationAttributes> implemen
 
   name: string;
 
-  feature1: string;
+  trackMessage: boolean;
+
+  deleteMessage: boolean;
+
+  webhookSupport: boolean;
+
+  inviteLinks: boolean;
 
   // apps hasMany hubBridges via appID
   hubBridges: hubBridges[];
@@ -124,11 +133,23 @@ export class apps extends Model<appsAttributes, appsCreationAttributes> implemen
         primaryKey: true,
       },
       name: {
-        type: DataTypes.TEXT,
+        type: DataTypes.TEXT('tiny'),
         allowNull: false,
       },
-      feature1: {
-        type: DataTypes.TEXT,
+      trackMessage: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      deleteMessage: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      webhookSupport: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      inviteLinks: {
+        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
     }, {

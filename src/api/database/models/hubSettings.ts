@@ -4,7 +4,7 @@ import type { hubs, hubsId } from './hubs';
 
 export interface hubSettingsAttributes {
   id: number;
-  allowInvites: number;
+  allowInvites: boolean;
 }
 
 export type hubSettingsPk = 'id';
@@ -15,7 +15,7 @@ export type hubSettingsCreationAttributes = Optional<hubSettingsAttributes, hubS
 export class hubSettings extends Model<hubSettingsAttributes, hubSettingsCreationAttributes> implements hubSettingsAttributes {
   id: number;
 
-  allowInvites: number;
+  allowInvites: boolean;
 
   // hubSettings belongsTo hubs via id
   id_hub: hubs;
