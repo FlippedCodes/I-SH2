@@ -1,16 +1,18 @@
 import type { Sequelize } from 'sequelize';
-import { apps as _apps } from './apps';
-import type { appsAttributes, appsCreationAttributes } from './apps';
-import { hubBridges as _hubBridges } from './hubBridges';
-import type { hubBridgesAttributes, hubBridgesCreationAttributes } from './hubBridges';
-import { hubSettings as _hubSettings } from './hubSettings';
-import type { hubSettingsAttributes, hubSettingsCreationAttributes } from './hubSettings';
-import { hubs as _hubs } from './hubs';
-import type { hubsAttributes, hubsCreationAttributes } from './hubs';
-import { messageLinks as _messageLinks } from './messageLinks';
-import type { messageLinksAttributes, messageLinksCreationAttributes } from './messageLinks';
-import { userBlocks as _userBlocks } from './userBlocks';
-import type { userBlocksAttributes, userBlocksCreationAttributes } from './userBlocks';
+import { apps as _apps } from '../models/apps';
+import type { appsAttributes, appsCreationAttributes } from '../models/apps';
+import { hubBridges as _hubBridges } from '../models/hubBridges';
+import type { hubBridgesAttributes, hubBridgesCreationAttributes } from '../models/hubBridges';
+import { hubSettings as _hubSettings } from '../models/hubSettings';
+import type { hubSettingsAttributes, hubSettingsCreationAttributes } from '../models/hubSettings';
+import { hubs as _hubs } from '../models/hubs';
+import type { hubsAttributes, hubsCreationAttributes } from '../models/hubs';
+import { messageLinks as _messageLinks } from '../models/messageLinks';
+import type { messageLinksAttributes, messageLinksCreationAttributes } from '../models/messageLinks';
+import { userBlocks as _userBlocks } from '../models/userBlocks';
+import type { userBlocksAttributes, userBlocksCreationAttributes } from '../models/userBlocks';
+import { userToSAgree as _userToSAgree } from './userToSAgree';
+import type { userToSAgreeAttributes, userToSAgreeCreationAttributes } from './userToSAgree';
 
 export {
   _apps as apps,
@@ -19,6 +21,7 @@ export {
   _hubs as hubs,
   _messageLinks as messageLinks,
   _userBlocks as userBlocks,
+  _userToSAgree as userToSAgree,
 };
 
 export type {
@@ -34,6 +37,8 @@ export type {
   messageLinksCreationAttributes,
   userBlocksAttributes,
   userBlocksCreationAttributes,
+  userToSAgreeAttributes,
+  userToSAgreeCreationAttributes,
 };
 
 export function initModels(sequelize: Sequelize) {
@@ -43,6 +48,7 @@ export function initModels(sequelize: Sequelize) {
   const hubs = _hubs.initModel(sequelize);
   const messageLinks = _messageLinks.initModel(sequelize);
   const userBlocks = _userBlocks.initModel(sequelize);
+  const userToSAgree = _userToSAgree.initModel(sequelize);
 
   hubBridges.belongsTo(apps, { as: 'app', foreignKey: 'appID' });
   apps.hasMany(hubBridges, { as: 'hubBridges', foreignKey: 'appID' });
@@ -52,6 +58,8 @@ export function initModels(sequelize: Sequelize) {
   apps.hasMany(messageLinks, { as: 'messageLinks', foreignKey: 'appID' });
   userBlocks.belongsTo(apps, { as: 'app', foreignKey: 'appID' });
   apps.hasMany(userBlocks, { as: 'userBlocks', foreignKey: 'appID' });
+  userToSAgree.belongsTo(apps, { as: 'app', foreignKey: 'appID' });
+  apps.hasMany(userToSAgree, { as: 'userToSAgrees', foreignKey: 'appID' });
   messageLinks.belongsTo(hubBridges, { as: 'channel', foreignKey: 'channelID' });
   hubBridges.hasMany(messageLinks, { as: 'messageLinks', foreignKey: 'channelID' });
   userBlocks.belongsTo(hubBridges, { as: 'channel', foreignKey: 'channelID' });
@@ -70,5 +78,6 @@ export function initModels(sequelize: Sequelize) {
     hubs,
     messageLinks,
     userBlocks,
+    userToSAgree,
   };
 }
