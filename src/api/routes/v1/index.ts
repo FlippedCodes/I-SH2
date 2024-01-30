@@ -8,21 +8,21 @@ import hubsRouter from './hubs';
 
 import usersRouter from './users';
 
-const router = express.Router();
+const v1 = express.Router();
 
-router.use('/apps', appsRouter);
+v1.use('/apps', appsRouter);
 
-router.use('/bridges', bridgesRouter);
+v1.use('/bridges', bridgesRouter);
 
-router.use('/hubs', hubsRouter);
+v1.use('/hubs', hubsRouter);
 
-router.use('/users', usersRouter);
+v1.use('/users', usersRouter);
 
-router.get('/healthcheck', (req, res) => {
+v1.get('/healthcheck', (req, res) => {
   res.status(200).json({
     status: 'success',
     message: 'Healthcheck successful',
   });
 });
 
-export default router;
+export default v1;

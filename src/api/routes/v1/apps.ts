@@ -1,15 +1,24 @@
 import express from 'express';
 
-const router = express.Router();
+const apps = express.Router();
 
-router
+apps
   .route('/')
   .get()
   .post();
 
-router
+apps
   .route('/:identifier')
   .get()
   .delete();
 
-export default router;
+export default apps;
+
+// {
+//   "id": 0,
+//   "name": "APPNAME",
+//   "features": {
+//     "featureX": true,
+//     "featureY": 0
+//   }
+// }

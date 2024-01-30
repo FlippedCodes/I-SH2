@@ -1,5 +1,19 @@
 import express from 'express';
 
-const router = express.Router();
+const bridges = express.Router();
 
-export default router;
+bridges
+  .route('/')
+  // create: channelID, { addintionalChannelData }, hubID, appIdentifier, allowInvites
+  .post();
+
+bridges
+  .route('/:hubId')
+  // get: list of bidges/channels
+  .get()
+  // update: channelID, { addintionalChannelData }, hubID, appIdentifier, allowInvites
+  .put()
+  
+  .delete();
+
+export default bridges;

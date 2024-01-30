@@ -1,5 +1,22 @@
 import express from 'express';
 
-const router = express.Router();
+const hubs = express.Router();
 
-export default router;
+hubs
+  .route('/')
+  // get: identifier; ownerId; searchString
+  // not sure if broadcast command should be removed, as this would need to be pagenated.
+  .get()
+  // post: name, ownerID, ownerAppIdentifier
+  .post();
+
+hubs
+  .route('/:hubId')
+  // get: lists settings and connected channels
+  .get()
+  // put: name, ownerID, ownerAppIdentifier
+  .put()
+  // delete
+  .delete();
+
+export default hubs;
