@@ -9,7 +9,7 @@ const connectDB = (DEBUG: boolean) => new Sequelize(
     host: process.env.DBHost,
     dialect: process.env.DBDialect as Options['dialect'],
     storage: process.env.DBStorage, // sqlite specific - usually unset
-    logging: DEBUG,
+    logging: DEBUG ? console.log : DEBUG,
   },
 );
 
