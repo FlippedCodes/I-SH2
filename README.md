@@ -314,6 +314,7 @@ erDiagram
     APP ||--o{ HUB-BRIDGE : uses
     APP ||--o{ HUB : uses
     APP ||--o{ USER-BLOCK : uses
+    APP ||--o{ USER-TOS-AGREE : uses
     APP ||--o{ MESSAGE-LINKS : uses
     APP {
       int appID PK
@@ -351,6 +352,12 @@ erDiagram
       varchar(255) channelID FK, UK
       tinytext linkID
       int appID FK
+      datetime createdAt
+      datetime updatedAt
+    }
+    USER-TOS-AGREE {
+      varchar(255) userID PK
+      int appID UK, FK
       datetime createdAt
       datetime updatedAt
     }
