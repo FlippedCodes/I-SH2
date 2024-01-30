@@ -1,6 +1,6 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
-import type { apps, appsId } from '../sequelize-auto/apps';
+import type { apps, appsId } from '../models/apps';
 
 export interface userToSAgreeAttributes {
   userID: string;
