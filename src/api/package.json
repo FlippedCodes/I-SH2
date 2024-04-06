@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js --experimental-specifier-resolution=node",
-    "build": "tsc -p ."
+    "db:migration": "drizzle-kit generate:mysql --config db/drizzle.config.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.30.7",
