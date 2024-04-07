@@ -81,8 +81,8 @@ export const appRelations = relations(app, ({ many }) => ({
 }));
 
 export const hubRelations = relations(hub, ({ many, one }) => ({
-  hubSettings: many(hubSetting),
   userBlocks: many(userBlock),
+  hubSetting: one(hubSetting, { fields: [hub.id], references: [hubSetting.id] }),
   app: one(app, { fields: [hub.id], references: [app.id] }),
 }));
 
