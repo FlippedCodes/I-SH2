@@ -5,21 +5,22 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
+      "type": "bun",
+      "internalConsoleOptions": "neverOpen",
       "request": "launch",
       "name": "Launch DB API",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}/src/api/dist/server.js",
-      "runtimeArgs": [
-        "--experimental-specifier-resolution=node",
-      ],
-      "envFile": "${workspaceFolder}/.env",
-      "preLaunchTask": "tsc: build - src/api/tsconfig.json",
-      "outFiles": [
-        "${workspaceFolder}/src/api/dist/**/*.js"
-      ]
+      "program": "src/api/index.ts",
+      "cwd": "${workspaceFolder}",
+      "stopOnEntry": false,
+      "watchMode": false
+    },
+    {
+      "type": "bun",
+      "internalConsoleOptions": "neverOpen",
+      "request": "attach",
+      "name": "Attach Bun",
+      "url": "ws://localhost:6499/",
+      "stopOnEntry": false
     }
   ]
 }
