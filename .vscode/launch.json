@@ -9,8 +9,8 @@
       "internalConsoleOptions": "neverOpen",
       "request": "launch",
       "name": "Launch DB API",
-      "program": "src/api/index.ts",
-      "cwd": "${workspaceFolder}",
+      "program": "index.ts",
+      "cwd": "${workspaceFolder}/src/api",
       "stopOnEntry": false,
       "watchMode": false
     },
