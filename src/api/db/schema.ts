@@ -7,6 +7,12 @@ import {
 export const app = mysqlTable('apps', {
   id: int('id').primaryKey().autoincrement(),
   name: tinytext('name').notNull(),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
+  updatedAt: timestamp('updatedAt').notNull().defaultNow(),
+});
+
+export const feature = mysqlTable('features', {
+  appID: int('appID').primaryKey().references(() => app.id),
   trackMessage: boolean('trackMessage').notNull().default(false),
   deleteMessage: boolean('deleteMessage').notNull().default(false),
   webhookSupport: boolean('webhookSupport').notNull().default(false),
@@ -72,7 +78,8 @@ export const messageLink = mysqlTable('messageLinks', {
   messageID_channelID: unique().on(t.messageID, t.channelID),
 }));
 
-export const appRelations = relations(app, ({ many }) => ({
+export const appRelations = relations(app, ({ many, one }) => ({
+  feature: one(feature, { fields: [app.id], references: [feature.appID] }),
   hubs: many(hub),
   userToSAgrees: many(userToSAgree),
   userBlocks: many(userBlock),
@@ -104,4 +111,8 @@ export const userBlockRelations = relations(userBlock, ({ one }) => ({
 export const messageLinkRelations = relations(messageLink, ({ one }) => ({
   app: one(app, { fields: [messageLink.appID], references: [app.id] }),
   hubBridges: one(hubBridge, { fields: [messageLink.channelID], references: [hubBridge.id] }),
+}));
+
+export const featureRelations = relations(feature, ({ one }) => ({
+  app: one(app, { fields: [feature.appID], references: [app.id] }),
 }));
