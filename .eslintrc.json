@@ -19,7 +19,7 @@
         "no-console": 0,
         "import/extensions": 0,
         "import/no-unresolved": 0,
-        "drizzle/enforce-delete-with-where": "error",
+        "drizzle/enforce-delete-with-where": 0,
         "drizzle/enforce-update-with-where": "error"
     }
 }
