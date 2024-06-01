@@ -310,6 +310,7 @@ The list of features is hardcoded and needs to be extended, if new features get 
 #### Diagram
 
 ```mermaid
+%%{init: {"erDiagram": {"defaultRenderer": "elk"}} }%%
 erDiagram
     APP ||--o{ HUB-BRIDGE : uses
     APP ||--o{ HUB : uses

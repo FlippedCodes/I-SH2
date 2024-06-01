@@ -1,6 +1,7 @@
 {
-  "name": "@db/api",
+  "name": "@api/backend",
   "version": "1.0.0",
+  "description": "This is the API for the bots to interact and request info from the DB.",
   "main": "index.js",
   "type": "module",
   "license": "MIT",
@@ -9,9 +10,11 @@
     "db:migration": "drizzle-kit generate:mysql --config db/drizzle.config.ts"
   },
   "dependencies": {
-    "@hono/swagger-ui": "^0.2.1",
+    "@hono/swagger-ui": "^0.2.2",
+    "@hono/zod-openapi": "^0.14.1",
     "drizzle-orm": "^0.30.7",
-    "hono": "^4.2.2",
+    "hono": "^4.4.2",
+    "hono-error-handler": "^1.0.0",
     "mysql2": "^3.9.3"
   }
 }
