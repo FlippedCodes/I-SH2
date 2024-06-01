@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "f6d4900a-eaea-4d71-80ff-e2a1dc803588",
+  "id": "8c24b382-0773-42b9-8263-33ff3053d218",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "apps": {
@@ -16,7 +16,46 @@
         },
         "name": {
           "name": "name",
-          "type": "tinytext",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "apps_id": {
+          "name": "apps_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "features": {
+      "name": "features",
+      "columns": {
+        "appID": {
+          "name": "appID",
+          "type": "int",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -71,12 +110,26 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "apps_id": {
-          "name": "apps_id",
-          "columns": [
+      "foreignKeys": {
+        "features_appID_apps_id_fk": {
+          "name": "features_appID_apps_id_fk",
+          "tableFrom": "features",
+          "tableTo": "apps",
+          "columnsFrom": [
+            "appID"
+          ],
+          "columnsTo": [
             "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "features_appID": {
+          "name": "features_appID",
+          "columns": [
+            "appID"
           ]
         }
       },
@@ -94,14 +147,14 @@
         },
         "name": {
           "name": "name",
-          "type": "tinytext",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "ownerID": {
           "name": "ownerID",
-          "type": "tinytext",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -168,7 +221,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(1)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -325,21 +378,21 @@
       "columns": {
         "messageID": {
           "name": "messageID",
-          "type": "varchar(1)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "channelID": {
           "name": "channelID",
-          "type": "varchar(1)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "linkID": {
           "name": "linkID",
-          "type": "tinytext",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -433,7 +486,7 @@
         },
         "userID": {
           "name": "userID",
-          "type": "tinytext",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -447,7 +500,7 @@
         },
         "channelID": {
           "name": "channelID",
-          "type": "varchar(1)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -543,7 +596,7 @@
       "columns": {
         "userID": {
           "name": "userID",
-          "type": "varchar(1)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false

@@ -1,12 +1,12 @@
 import { relations } from 'drizzle-orm';
 
 import {
-  int, mysqlTable, boolean, tinytext, timestamp, json, unique, varchar,
+  int, mysqlTable, boolean, timestamp, json, unique, varchar,
 } from 'drizzle-orm/mysql-core';
 
 export const app = mysqlTable('apps', {
   id: int('id').primaryKey().autoincrement(),
-  name: tinytext('name').notNull(),
+  name: varchar('name', { length: 255 }).notNull(),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt').notNull().defaultNow(),
 });
@@ -23,15 +23,15 @@ export const feature = mysqlTable('features', {
 
 export const hub = mysqlTable('hubs', {
   id: int('id').primaryKey().autoincrement(),
-  name: tinytext('name').notNull().unique(),
-  ownerID: tinytext('ownerID').notNull(),
+  name: varchar('name', { length: 255 }).notNull().unique(),
+  ownerID: varchar('ownerID', { length: 255 }).notNull(),
   appID: int('appID').notNull().references(() => app.id),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt').notNull().defaultNow(),
 });
 
 export const hubBridge = mysqlTable('hubBridges', {
-  id: varchar('id', [255]).primaryKey(),
+  id: varchar('id', { length: 255 }).primaryKey(),
   appID: int('appID').notNull().references(() => app.id),
   hubID: int('hubID').notNull().references(() => hub.id),
   additionalData: json('additionalData'),
@@ -50,9 +50,9 @@ export const hubSetting = mysqlTable('hubSettings', {
 
 export const userBlock = mysqlTable('userBlocks', {
   id: int('id').primaryKey().autoincrement(),
-  userID: tinytext('userID').notNull(),
+  userID: varchar('userID', { length: 255 }).notNull(),
   appID: int('appID').notNull().references(() => app.id),
-  channelID: varchar('channelID', [255]).notNull().references(() => hubBridge.id),
+  channelID: varchar('channelID', { length: 255 }).notNull().references(() => hubBridge.id),
   hubID: int('hubID').notNull().references(() => hub.id),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt').notNull().defaultNow(),
@@ -61,16 +61,16 @@ export const userBlock = mysqlTable('userBlocks', {
 }));
 
 export const userToSAgree = mysqlTable('userToSAgrees', {
-  userID: varchar('userID', [255]).primaryKey(),
+  userID: varchar('userID', { length: 255 }).primaryKey(),
   appID: int('appID').notNull().references(() => app.id),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt').notNull().defaultNow(),
 });
 
 export const messageLink = mysqlTable('messageLinks', {
-  messageID: varchar('messageID', [255]).primaryKey(),
-  channelID: varchar('channelID', [255]).references(() => hubBridge.id),
-  linkID: tinytext('linkID').primaryKey(),
+  messageID: varchar('messageID', { length: 255 }).primaryKey(),
+  channelID: varchar('channelID', { length: 255 }).references(() => hubBridge.id),
+  linkID: varchar('linkID', { length: 255 }).primaryKey(),
   appID: int('appID').notNull().references(() => app.id),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt').notNull().defaultNow(),

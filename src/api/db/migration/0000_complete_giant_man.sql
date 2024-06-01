@@ -1,19 +1,26 @@
 CREATE TABLE `apps` (
 	`id` int AUTO_INCREMENT NOT NULL,
-	`name` tinytext NOT NULL,
+	`name` varchar(255) NOT NULL,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `apps_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `features` (
+	`appID` int NOT NULL,
 	`trackMessage` boolean NOT NULL DEFAULT false,
 	`deleteMessage` boolean NOT NULL DEFAULT false,
 	`webhookSupport` boolean NOT NULL DEFAULT false,
 	`inviteLinks` boolean NOT NULL DEFAULT false,
 	`createdAt` timestamp NOT NULL DEFAULT (now()),
 	`updatedAt` timestamp NOT NULL DEFAULT (now()),
-	CONSTRAINT `apps_id` PRIMARY KEY(`id`)
+	CONSTRAINT `features_appID` PRIMARY KEY(`appID`)
 );
 --> statement-breakpoint
 CREATE TABLE `hubs` (
 	`id` int AUTO_INCREMENT NOT NULL,
-	`name` tinytext NOT NULL,
-	`ownerID` tinytext NOT NULL,
+	`name` varchar(255) NOT NULL,
+	`ownerID` varchar(255) NOT NULL,
 	`appID` int NOT NULL,
 	`createdAt` timestamp NOT NULL DEFAULT (now()),
 	`updatedAt` timestamp NOT NULL DEFAULT (now()),
@@ -22,7 +29,7 @@ CREATE TABLE `hubs` (
 );
 --> statement-breakpoint
 CREATE TABLE `hubBridges` (
-	`id` varchar(1) NOT NULL,
+	`id` varchar(255) NOT NULL,
 	`appID` int NOT NULL,
 	`hubID` int NOT NULL,
 	`additionalData` json,
@@ -41,9 +48,9 @@ CREATE TABLE `hubSettings` (
 );
 --> statement-breakpoint
 CREATE TABLE `messageLinks` (
-	`messageID` varchar(1) NOT NULL,
-	`channelID` varchar(1),
-	`linkID` tinytext NOT NULL,
+	`messageID` varchar(255) NOT NULL,
+	`channelID` varchar(255),
+	`linkID` varchar(255) NOT NULL,
 	`appID` int NOT NULL,
 	`createdAt` timestamp NOT NULL DEFAULT (now()),
 	`updatedAt` timestamp NOT NULL DEFAULT (now()),
@@ -53,9 +60,9 @@ CREATE TABLE `messageLinks` (
 --> statement-breakpoint
 CREATE TABLE `userBlocks` (
 	`id` int AUTO_INCREMENT NOT NULL,
-	`userID` tinytext NOT NULL,
+	`userID` varchar(255) NOT NULL,
 	`appID` int NOT NULL,
-	`channelID` varchar(1) NOT NULL,
+	`channelID` varchar(255) NOT NULL,
 	`hubID` int NOT NULL,
 	`createdAt` timestamp NOT NULL DEFAULT (now()),
 	`updatedAt` timestamp NOT NULL DEFAULT (now()),
@@ -64,13 +71,14 @@ CREATE TABLE `userBlocks` (
 );
 --> statement-breakpoint
 CREATE TABLE `userToSAgrees` (
-	`userID` varchar(1) NOT NULL,
+	`userID` varchar(255) NOT NULL,
 	`appID` int NOT NULL,
 	`createdAt` timestamp NOT NULL DEFAULT (now()),
 	`updatedAt` timestamp NOT NULL DEFAULT (now()),
 	CONSTRAINT `userToSAgrees_userID` PRIMARY KEY(`userID`)
 );
 --> statement-breakpoint
+ALTER TABLE `features` ADD CONSTRAINT `features_appID_apps_id_fk` FOREIGN KEY (`appID`) REFERENCES `apps`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `hubs` ADD CONSTRAINT `hubs_appID_apps_id_fk` FOREIGN KEY (`appID`) REFERENCES `apps`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `hubBridges` ADD CONSTRAINT `hubBridges_appID_apps_id_fk` FOREIGN KEY (`appID`) REFERENCES `apps`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `hubBridges` ADD CONSTRAINT `hubBridges_hubID_hubs_id_fk` FOREIGN KEY (`hubID`) REFERENCES `hubs`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
