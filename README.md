@@ -3,7 +3,7 @@
 The concept is to make a modular ecosystem in a monorepo to dynamic add or remove difference instant messaging services with the goal to connect channels or groups together.
 
 > [!IMPORTANT]
-> This is a very WIP project. I (Phil) will focus first of implementing all existing features from I-SH1 Discord-Only implementation.
+> This is a very WIP project. I (Phil) will focus first of implementing all existing features from the original [I-SH](https://github.com/FlippedCodes/I-SH) (Discord-Only) implementation.
 
 ## Table on Contents
 
