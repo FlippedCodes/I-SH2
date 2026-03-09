@@ -1,0 +1,203 @@
+import { relations } from 'drizzle-orm';
+
+import {
+  integer,
+  pgTable,
+  boolean,
+  timestamp,
+  json,
+  unique,
+  varchar,
+} from 'drizzle-orm/pg-core';
+
+export const appTable = pgTable('apps', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar('name', { length: 255 }).notNull(),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
+  updatedAt: timestamp('updatedAt')
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
+export const featureTable = pgTable('features', {
+  appID: integer('appID')
+    .primaryKey()
+    .references(() => appTable.id),
+  trackMessage: boolean('trackMessage').notNull().default(false),
+  deleteMessage: boolean('deleteMessage').notNull().default(false),
+  webhookSupport: boolean('webhookSupport').notNull().default(false),
+  inviteLinks: boolean('inviteLinks').notNull().default(false),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
+  updatedAt: timestamp('updatedAt')
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
+export const hubTable = pgTable('hubs', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar('name', { length: 255 }).notNull().unique(),
+  ownerID: varchar('ownerID', { length: 255 }).notNull(),
+  appID: integer('appID')
+    .notNull()
+    .references(() => appTable.id),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
+  updatedAt: timestamp('updatedAt')
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
+export const hubBridgeTable = pgTable(
+  'hubBridges',
+  {
+    id: varchar('id', { length: 255 }).primaryKey(),
+    appID: integer('appID')
+      .notNull()
+      .references(() => appTable.id),
+    hubID: integer('hubID')
+      .notNull()
+      .references(() => hubTable.id),
+    additionalData: json('additionalData'),
+    createdAt: timestamp('createdAt').notNull().defaultNow(),
+    updatedAt: timestamp('updatedAt')
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (t) => ({
+    id_data_app: unique().on(t.id, t.appID, t.hubID),
+  }),
+);
+
+export const hubSettingTable = pgTable('hubSettings', {
+  id: integer('id')
+    .primaryKey()
+    .references(() => hubTable.id),
+  allowInvites: boolean('allowInvites').notNull().default(false),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
+  updatedAt: timestamp('updatedAt')
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
+export const userBlockTable = pgTable(
+  'userBlocks',
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    userID: varchar('userID', { length: 255 }).notNull(),
+    appID: integer('appID')
+      .notNull()
+      .references(() => appTable.id),
+    channelID: varchar('channelID', { length: 255 })
+      .notNull()
+      .references(() => hubBridgeTable.id),
+    hubID: integer('hubID')
+      .notNull()
+      .references(() => hubTable.id),
+    createdAt: timestamp('createdAt').notNull().defaultNow(),
+    updatedAt: timestamp('updatedAt')
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (t) => ({
+    userID_appID_channelID_hubID: unique().on(
+      t.userID,
+      t.appID,
+      t.channelID,
+      t.hubID,
+    ),
+  }),
+);
+
+export const userToSAgreeTable = pgTable('userToSAgrees', {
+  userID: varchar('userID', { length: 255 }).primaryKey(),
+  appID: integer('appID')
+    .notNull()
+    .references(() => appTable.id),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
+  updatedAt: timestamp('updatedAt')
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
+export const messageLinkTable = pgTable(
+  'messageLinks',
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    messageID: varchar('messageID', { length: 255 }),
+    channelID: varchar('channelID', { length: 255 }).references(
+      () => hubBridgeTable.id,
+    ),
+    linkID: varchar('linkID', { length: 255 }),
+    appID: integer('appID')
+      .notNull()
+      .references(() => appTable.id),
+    createdAt: timestamp('createdAt').notNull().defaultNow(),
+    updatedAt: timestamp('updatedAt')
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (t) => ({
+    messageID_channelID: unique().on(t.messageID, t.channelID),
+  }),
+);
+
+export const appRelations = relations(appTable, ({ many, one }) => ({
+  feature: one(featureTable, { fields: [appTable.id], references: [featureTable.appID] }),
+  hubs: many(hubTable),
+  userToSAgrees: many(userToSAgreeTable),
+  userBlocks: many(userBlockTable),
+  hubBridges: many(hubBridgeTable),
+  messageLinks: many(messageLinkTable),
+}));
+
+export const hubRelations = relations(hubTable, ({ many, one }) => ({
+  userBlocks: many(userBlockTable),
+  hubSetting: one(hubSettingTable, {
+    fields: [hubTable.id],
+    references: [hubSettingTable.id],
+  }),
+  app: one(appTable, { fields: [hubTable.id], references: [appTable.id] }),
+}));
+
+export const userToSAgreeRelations = relations(userToSAgreeTable, ({ one }) => ({
+  app: one(appTable, {
+    fields: [userToSAgreeTable.appID],
+    references: [appTable.id],
+  }),
+}));
+
+export const hubBridgeRelations = relations(hubBridgeTable, ({ one, many }) => ({
+  app: one(appTable, { fields: [hubBridgeTable.appID], references: [appTable.id] }),
+  userBlocks: many(userBlockTable),
+}));
+
+export const userBlockRelations = relations(userBlockTable, ({ one }) => ({
+  app: one(appTable, { fields: [userBlockTable.appID], references: [appTable.id] }),
+  hub: one(hubTable, { fields: [userBlockTable.hubID], references: [hubTable.id] }),
+  hubBridge: one(hubBridgeTable, {
+    fields: [userBlockTable.channelID],
+    references: [hubBridgeTable.id],
+  }),
+}));
+
+export const messageLinkRelations = relations(messageLinkTable, ({ one }) => ({
+  app: one(appTable, {
+    fields: [messageLinkTable.appID],
+    references: [appTable.id],
+  }),
+  hubBridges: one(hubBridgeTable, {
+    fields: [messageLinkTable.channelID],
+    references: [hubBridgeTable.id],
+  }),
+}));
+
+export const featureRelations = relations(featureTable, ({ one }) => ({
+  app: one(appTable, { fields: [featureTable.appID], references: [appTable.id] }),
+}));

@@ -6,8 +6,8 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "start": "bun index.ts",
-    "db:migration": "drizzle-kit generate:mysql --config db/drizzle.config.ts"
+    "start": "bun ./src/index.ts",
+    "db:migrate": "drizzle-kit generate --config drizzle.config.ts"
   },
   "dependencies": {
     "@hono/swagger-ui": "^0.2.2",

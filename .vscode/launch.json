@@ -8,8 +8,8 @@
       "type": "bun",
       "internalConsoleOptions": "neverOpen",
       "request": "launch",
-      "name": "Launch DB API",
-      "program": "index.ts",
+      "name": "Launch API",
+      "program": "./src/index.ts",
       "cwd": "${workspaceFolder}/src/api",
       "stopOnEntry": false,
       "watchMode": false

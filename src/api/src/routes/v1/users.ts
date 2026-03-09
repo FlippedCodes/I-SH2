@@ -11,24 +11,24 @@ users.use('/blocks', blocks);
 users.use('/tosAgrees', tosAgrees);
 
 blocks
-  .route('/:hubId')
+  // .route('/:hubId')
   // create: { appIdenticator, chanenlID, userID, reason }
   .post();
 
 blocks
-  .route('/:hubId')
+  // .route('/:hubId')
   // get: list of blocks in a hubid; optional uri args are userid and appidentifier (only together)
   .get()
   // delete: block ID
   .delete();
 
 tosAgrees
-  .route('/:userId')
+  // .route('/:userId')
   // create: { userId, AppIndicator }
   .put();
 
 tosAgrees
-  .route('/:userId')
+  // .route('/:userId')
   // get: a list of all the service ToS the user Agreed to
   .get()
   // create: { userId, AppIndicator }

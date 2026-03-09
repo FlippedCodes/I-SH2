@@ -3,7 +3,7 @@ import { Hono } from 'hono';
 const bridges = new Hono();
 
 bridges
-  .route('/')
+  // .route('/')
   // create: channelID, { addintionalChannelData }, hubID, appIdentifier, allowInvites
   .post();
 
