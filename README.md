@@ -44,12 +44,13 @@ The current status is to get Discord running again on this new infrastructure wi
 | ------------- | :----: | ------------------------------------------------------------------------------------------ |
 | Documentation |   🚧    | API Docs                                                                                   |
 | Legal         |   🚧    | Includes proper notice to the user that messages sent need to obey the other platforms ToS |
-| Docker Setup  |   ✅    |                                                                                            |
 | API           |   🚧    |                                                                                            |
 | Discord       |   🚧    |                                                                                            |
+| Fluxer        |   ⏰    |                                                                                            |
 | Telegram      |   ⏰    |                                                                                            |
+| Stoat         |   ❔    |                                                                                            |
 | Spacebar      |   ❔    |                                                                                            |
-| Guilded       |   ❔    |                                                                                            |
+| Guilded       |   ❌    |                                                                                            |
 | Signal        |   ❔    |                                                                                            |
 | WhatsApp      |   ❌    | No bot support, unless provided by WhatsApp.                                               |
 
