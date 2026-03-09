@@ -1,6 +1,6 @@
 # Inter-Server Hub 2
 
-The concept is to make a modular ecosystem in a monorepo to dynamic add or remove difference instant messaging services with the goal to connect channels or groups together.
+The concept is to make a modular ecosystem to dynamically add or remove difference instant messaging services with the goal to connect platforms together.
 
 > [!IMPORTANT]
 > This is a very WIP project. I (Phil) will focus first of implementing all existing features from the original [I-SH](https://github.com/FlippedCodes/I-SH) (Discord-Only) implementation.
