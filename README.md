@@ -306,7 +306,7 @@ The list of features is hardcoded and needs to be extended, if new features get 
 | `media`             | boolean | ✅        | `false`       |                                                                                                                                       |
 | `mediaStickers`     | boolean | ✅        | `false`       |                                                                                                                                       |
 | `mediaEmojis`       | boolean | ✅        | `false`       |                                                                                                                                       |
-| `delaunched`        | boolean | ✅        | `false`       | When a service gets delaunched from I-SH2. Can only be set to true, when the service doesn't have a queue open.                       |
+| `delaunch`        | boolean | ✅        | `false`       | When a service gets delaunched from I-SH2. Can only be set to true, when the service doesn't have a queue open.                       |
 
 #### Diagram
 
