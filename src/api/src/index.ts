@@ -14,7 +14,10 @@ import packageInf from '../package.json';
 
 import v1 from './routes/v1/index';
 
-export const db = drizzle(`postgresql://${process.env.DBusername}:${process.env.DBpassword}@${process.env.DBhost}:${parseInt(<string>process.env.DBport, 10) || 5432}/${process.env.DBusername}`, { casing: 'camelCase' });
+export const db = drizzle(
+  `postgresql://${process.env.DBusername}:${process.env.DBpassword}@${process.env.DBhost}:${parseInt(<string>process.env.DBport, 10) || 5432}/${process.env.DBusername}`,
+  { casing: 'camelCase' },
+);
 
 const DEBUG = process.env.NODE_ENV === 'development';
 
@@ -53,12 +56,14 @@ app.doc31('/doc', {
 app.get('/ui', swaggerUI({ url: '/doc' }));
 
 // 404
-app.notFound((c) => c.json(
-  {
-    error: `Route: ${c.req.url} does not exist on this server.`,
-  },
-  404,
-));
+app.notFound((c) =>
+  c.json(
+    {
+      error: `Route: ${c.req.url} does not exist on this server.`,
+    },
+    404,
+  ),
+);
 
 // db setup and connect
 await migrate(db, { migrationsFolder: './drizzle' });
