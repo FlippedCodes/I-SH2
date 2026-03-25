@@ -60,11 +60,11 @@ app.notFound((c) => c.json(
   404,
 ));
 
-console.debug(`🚀 API started successfully on ${port}!`);
-
 // db setup and connect
 await migrate(db, { migrationsFolder: './drizzle' });
 console.debug('🛢️ Synced database successfully!');
+
+console.debug(`🚀 API started successfully on ${port}!`);
 
 export { DEBUG, app };
 
