@@ -7,6 +7,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 
 import packageInf from '../package.json';
 import v1 from './routes/v1/index';
+import { Scalar } from '@scalar/hono-api-reference';
 
 export const db = drizzle(
   `postgresql://${process.env.DBusername}:${process.env.DBpassword}@${process.env.DBhost}:${parseInt(<string>process.env.DBport, 10) || 5432}/${process.env.DBusername}`,
@@ -46,8 +47,9 @@ app.doc31('/doc', {
   },
 });
 
-// swagger ui
-app.get('/ui', swaggerUI({ url: '/doc' }));
+// api browser
+app.get('/swagger', swaggerUI({ url: '/doc' }));
+app.get('/scalar', Scalar({ url: '/doc' }))
 
 // 404
 app.notFound((c) =>
