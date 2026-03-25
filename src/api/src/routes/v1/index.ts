@@ -1,15 +1,10 @@
 import { OpenAPIHono } from '@hono/zod-openapi';
-
 import { errorHandler } from 'hono-error-handler';
-
 import { StatusCode } from 'hono/utils/http-status';
 
 import appsRouter from './apps';
-
 import bridgesRouter from './bridges';
-
 import hubsRouter from './hubs';
-
 import usersRouter from './users';
 
 const v1 = new OpenAPIHono();

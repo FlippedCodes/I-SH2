@@ -1,17 +1,11 @@
 import { OpenAPIHono } from '@hono/zod-openapi';
-
 import { swaggerUI } from '@hono/swagger-ui';
-
 import { logger } from 'hono/logger';
-
 import { basicAuth } from 'hono/basic-auth';
-
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
-
 import { drizzle } from 'drizzle-orm/node-postgres';
 
 import packageInf from '../package.json';
-
 import v1 from './routes/v1/index';
 
 export const db = drizzle(

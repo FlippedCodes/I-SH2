@@ -1,13 +1,9 @@
 import { OpenAPIHono, z, createRoute } from '@hono/zod-openapi';
-
 import { ErrorResponse } from 'hono-error-handler';
-
 import { eq } from 'drizzle-orm';
 
 import { db } from '../../index';
-
 import { appTable } from '../../schema/schema';
-
 import { featureSchema, appSchema } from '../../schema/zodSchemas';
 
 const apps = new OpenAPIHono();
