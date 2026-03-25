@@ -24,10 +24,18 @@ export const featureTable = pgTable('features', {
   appID: integer('appID')
     .primaryKey()
     .references(() => appTable.id),
+  tosLink: varchar('tosLink', { length: 255 }).notNull(),
+  privacyPolicyLink: varchar('privacyPolicyLink', { length: 255 }).notNull(),
+  textLength: integer('textLength').notNull().default(0),
   trackMessage: boolean('trackMessage').notNull().default(false),
   deleteMessage: boolean('deleteMessage').notNull().default(false),
-  webhookSupport: boolean('webhookSupport').notNull().default(false),
+  deleteMessageTime: integer('deleteMessageTime').notNull().default(0),
   inviteLinks: boolean('inviteLinks').notNull().default(false),
+  webhookSupport: boolean('webhookSupport').notNull().default(false),
+  media: boolean('media').notNull().default(false),
+  mediaStickers: boolean('mediaStickers').notNull().default(false),
+  mediaEmojis: boolean('mediaEmojis').notNull().default(false),
+  delaunch: boolean('delaunch').notNull().default(false),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt')
     .notNull()
