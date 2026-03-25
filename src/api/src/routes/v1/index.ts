@@ -12,11 +12,8 @@ const v1 = new OpenAPIHono();
 // TODO: fix code and finally populate
 
 v1.route('/apps', appsRouter);
-
 v1.route('/bridges', bridgesRouter);
-
 v1.route('/hubs', hubsRouter);
-
 v1.route('/users', usersRouter);
 
 v1.get('/healthcheck', (c) =>
