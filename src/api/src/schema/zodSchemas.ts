@@ -8,9 +8,9 @@ export const appSchemaFull = createSelectSchema(appTable);
 // Create filtered versions without createdAt and updatedAt
 export const featureSchema = featureSchemaFull.omit({
   createdAt: true,
-  updatedAt: true
+  updatedAt: true,
 });
 export const appSchema = appSchemaFull.omit({
   createdAt: true,
-  updatedAt: true
+  updatedAt: true,
 });
