@@ -2,9 +2,9 @@ import { OpenAPIHono, z, createRoute } from '@hono/zod-openapi';
 import { ErrorResponse } from 'hono-error-handler';
 import { eq } from 'drizzle-orm';
 
-import { db } from '../../index';
+import { app, db } from '../../index';
 import { appTable } from '../../schema/schema';
-import { featureSchema, appSchema } from '../../schema/zodSchemas';
+import { appWithFeaturesSchema, appSchema } from '../../zodSchemas';
 
 const apps = new OpenAPIHono();
 
@@ -27,10 +27,12 @@ apps.openapi(
       200: {
         content: {
           'application/json': {
-            schema: appSchema.extend({ features: featureSchema }).openapi('AppWithFeatures'),
+            schema: appSchema
+              .extend({ features: appWithFeaturesSchema })
+              .openapi('AppWithFeatures'),
           },
         },
-        description: 'Retrieve specific app',
+        description: 'Retrieve specific registered app.',
       },
     },
   }),
@@ -41,14 +43,7 @@ apps.openapi(
       with: { feature: true },
     });
     if (!result) throw new ErrorResponse("App doesn't exist", 404);
-    return c.json(
-      {
-        id: result.id,
-        appName: result.name,
-        features: result.feature,
-      },
-      200,
-    );
+    return c.json(result, 200);
   },
 );
 
@@ -64,7 +59,7 @@ apps.openapi(
             schema: appSchema.openapi('App'),
           },
         },
-        description: 'Retrieve specific app',
+        description: 'Retrieve all registered apps.',
       },
     },
   }),
@@ -79,4 +74,3 @@ apps.openapi(
 );
 
 export default apps;
-
