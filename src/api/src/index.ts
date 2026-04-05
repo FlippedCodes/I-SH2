@@ -8,10 +8,11 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import packageInf from '../package.json';
 import v1 from './routes/v1/index';
 import { Scalar } from '@scalar/hono-api-reference';
+import { schema } from './schema/schema';
 
 export const db = drizzle(
   `postgresql://${process.env.DBusername}:${process.env.DBpassword}@${process.env.DBhost}:${parseInt(<string>process.env.DBport, 10) || 5432}/${process.env.DBusername}`,
-  { casing: 'camelCase' },
+  { casing: 'camelCase', schema },
 );
 
 const DEBUG = process.env.NODE_ENV === 'development';

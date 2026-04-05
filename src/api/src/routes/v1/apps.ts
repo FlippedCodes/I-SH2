@@ -3,8 +3,13 @@ import { ErrorResponse } from 'hono-error-handler';
 import { eq } from 'drizzle-orm';
 
 import { app, db } from '../../index';
-import { appTable } from '../../schema/schema';
-import { appWithFeaturesSchema, appSchema } from '../../zodSchemas';
+import { appTable, featureTable } from '../../schema/schema';
+import {
+  appWithFeaturesSchema,
+  appSchema,
+  appSchemaFull,
+  featureSchemaFull,
+} from '../../zodSchemas';
 
 const apps = new OpenAPIHono();
 
@@ -27,8 +32,8 @@ apps.openapi(
       200: {
         content: {
           'application/json': {
-            schema: appSchema
-              .extend({ features: appWithFeaturesSchema })
+            schema: appSchemaFull
+              .extend({ features: featureSchemaFull })
               .openapi('AppWithFeatures'),
           },
         },
