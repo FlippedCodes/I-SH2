@@ -13,6 +13,7 @@ import {
 export const appTable = pgTable('apps', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar('name', { length: 255 }).notNull(),
+  delaunch: boolean('delaunch').notNull().default(false),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt')
     .notNull()
@@ -35,7 +36,6 @@ export const featureTable = pgTable('features', {
   media: boolean('media').notNull().default(false),
   mediaStickers: boolean('mediaStickers').notNull().default(false),
   mediaEmojis: boolean('mediaEmojis').notNull().default(false),
-  delaunch: boolean('delaunch').notNull().default(false),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt')
     .notNull()
@@ -209,3 +209,10 @@ export const messageLinkRelations = relations(messageLinkTable, ({ one }) => ({
 export const featureRelations = relations(featureTable, ({ one }) => ({
   app: one(appTable, { fields: [featureTable.appID], references: [appTable.id] }),
 }));
+
+// Export your schema
+export const schema = {
+  app: appTable,
+  feature: featureTable,
+  appRelations,
+};
