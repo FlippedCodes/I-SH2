@@ -2,11 +2,11 @@
   "name": "@i-sh2/api",
   "version": "1.0.0",
   "description": "This is the API for the bots to interact and request info from the DB.",
-  "main": "index.js",
+  "main": "src/index.ts",
   "type": "module",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "scripts": {
-    "start": "bun ./src/index.ts",
+    "start": "bun ./src/index",
     "db:migrate": "drizzle-kit generate --config drizzle.config.ts",
     "test:watch": "bun test --watch"
   },
