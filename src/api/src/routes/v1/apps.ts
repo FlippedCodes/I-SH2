@@ -129,6 +129,7 @@ apps.openapi(
     },
   }),
   async (_c_) => {
+    // TODO: after creation, queue with correct routing also has to be created
     const appData = _c_.req.valid('json');
 
     // Check if app with this name already exists
@@ -272,6 +273,7 @@ apps.openapi(
     },
   }),
   async (_c_) => {
+    // TODO: check if queue is empty, before deleting
     const { appName } = _c_.req.valid('param');
 
     // Check if app exists
