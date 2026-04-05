@@ -80,7 +80,7 @@ apps.openapi(
     const results = await db.query.app.findMany();
     if (!results) throw new ErrorResponse('There are no apps registered', 404);
     return _c_.json(
-      results.map((result) => result.name),
+      results.map((result) => ( { id: result.id, name: result.name } )),
       200,
     );
   },
