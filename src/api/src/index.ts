@@ -17,7 +17,7 @@ export const db = drizzle(
 
 const DEBUG = process.env.NODE_ENV === 'development';
 
-const port = process.env.port || 3000;
+const port = process.env.PORT || 3000;
 
 const app = new OpenAPIHono();
 
@@ -50,7 +50,7 @@ app.doc31('/doc', {
 
 // api browser
 app.get('/swagger', swaggerUI({ url: '/doc' }));
-app.get('/scalar', Scalar({ url: '/doc' }))
+app.get('/scalar', Scalar({ url: '/doc', agent: { disabled: true } }));
 
 // 404
 app.notFound((c) =>

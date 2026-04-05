@@ -13,6 +13,7 @@ import {
 
 const apps = new OpenAPIHono();
 
+//#region Get App
 apps.openapi(
   createRoute({
     method: 'get',
@@ -39,19 +40,23 @@ apps.openapi(
         },
         description: 'Retrieve specific registered app.',
       },
+      400: {
+        description: 'App not found',
+      },
     },
   }),
-  async (c) => {
-    const { appName } = c.req.valid('param');
+  async (_c_) => {
+    const { appName } = _c_.req.valid('param');
     const result = await db.query.app.findFirst({
       where: eq(appTable.name, appName),
       with: { feature: true },
     });
-    if (!result) throw new ErrorResponse("App doesn't exist", 404);
-    return c.json(result, 200);
+    if (!result) throw new ErrorResponse('App not found', 404);
+    return _c_.json(result, 200);
   },
 );
 
+//#region Get all Apps
 apps.openapi(
   createRoute({
     method: 'get',
@@ -64,14 +69,17 @@ apps.openapi(
             schema: appSchema.openapi('App'),
           },
         },
-        description: 'Retrieve all registered apps.',
+        description: 'Retrieve all registered apps',
+      },
+      404: {
+        description: 'There are no apps registered',
       },
     },
   }),
-  async (c) => {
+  async (_c_) => {
     const results = await db.query.app.findMany();
-    if (!results) throw new ErrorResponse('There are no apps registered.', 404);
-    return c.json(
+    if (!results) throw new ErrorResponse('There are no apps registered', 404);
+    return _c_.json(
       results.map((result) => result.name),
       200,
     );
