@@ -16,8 +16,8 @@ v1.route('/bridges', bridgesRouter);
 v1.route('/hubs', hubsRouter);
 v1.route('/users', usersRouter);
 
-v1.get('/healthcheck', (c) =>
-  c.json({
+v1.get('/healthcheck', (_c_) =>
+  _c_.json({
     status: 'success',
     message: 'Healthcheck successful',
   }),
