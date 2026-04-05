@@ -10,6 +10,7 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 
+//#region appTable
 export const appTable = pgTable('apps', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar('name', { length: 255 }).notNull(),
@@ -21,6 +22,7 @@ export const appTable = pgTable('apps', {
     .$onUpdate(() => new Date()),
 });
 
+//#region featureTable
 export const featureTable = pgTable('features', {
   appID: integer('appID')
     .primaryKey()
@@ -43,6 +45,7 @@ export const featureTable = pgTable('features', {
     .$onUpdate(() => new Date()),
 });
 
+//#region hubTable
 export const hubTable = pgTable('hubs', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar('name', { length: 255 }).notNull().unique(),
@@ -57,6 +60,7 @@ export const hubTable = pgTable('hubs', {
     .$onUpdate(() => new Date()),
 });
 
+//#region hubBridgeTable
 export const hubBridgeTable = pgTable(
   'hubBridges',
   {
@@ -79,6 +83,7 @@ export const hubBridgeTable = pgTable(
   }),
 );
 
+//#region hubSettingTable
 export const hubSettingTable = pgTable('hubSettings', {
   id: integer('id')
     .primaryKey()
@@ -91,6 +96,7 @@ export const hubSettingTable = pgTable('hubSettings', {
     .$onUpdate(() => new Date()),
 });
 
+//#region userBlockTable
 export const userBlockTable = pgTable(
   'userBlocks',
   {
@@ -121,6 +127,7 @@ export const userBlockTable = pgTable(
   }),
 );
 
+//#region userToSAgreeTable
 export const userToSAgreeTable = pgTable('userToSAgrees', {
   userID: varchar('userID', { length: 255 }).primaryKey(),
   appID: integer('appID')
@@ -133,6 +140,7 @@ export const userToSAgreeTable = pgTable('userToSAgrees', {
     .$onUpdate(() => new Date()),
 });
 
+//#region messageLinkTable
 export const messageLinkTable = pgTable(
   'messageLinks',
   {
@@ -156,6 +164,7 @@ export const messageLinkTable = pgTable(
   }),
 );
 
+//#region appRelations
 export const appRelations = relations(appTable, ({ many, one }) => ({
   feature: one(featureTable, { fields: [appTable.id], references: [featureTable.appID] }),
   hubs: many(hubTable),
@@ -165,6 +174,7 @@ export const appRelations = relations(appTable, ({ many, one }) => ({
   messageLinks: many(messageLinkTable),
 }));
 
+//#region hubRelations
 export const hubRelations = relations(hubTable, ({ many, one }) => ({
   userBlocks: many(userBlockTable),
   hubSetting: one(hubSettingTable, {
@@ -174,6 +184,7 @@ export const hubRelations = relations(hubTable, ({ many, one }) => ({
   app: one(appTable, { fields: [hubTable.id], references: [appTable.id] }),
 }));
 
+//#region userToSAgreeRelations
 export const userToSAgreeRelations = relations(userToSAgreeTable, ({ one }) => ({
   app: one(appTable, {
     fields: [userToSAgreeTable.appID],
@@ -181,11 +192,13 @@ export const userToSAgreeRelations = relations(userToSAgreeTable, ({ one }) => (
   }),
 }));
 
+//#region hubBridgeRelations
 export const hubBridgeRelations = relations(hubBridgeTable, ({ one, many }) => ({
   app: one(appTable, { fields: [hubBridgeTable.appID], references: [appTable.id] }),
   userBlocks: many(userBlockTable),
 }));
 
+//#region userBlockRelations
 export const userBlockRelations = relations(userBlockTable, ({ one }) => ({
   app: one(appTable, { fields: [userBlockTable.appID], references: [appTable.id] }),
   hub: one(hubTable, { fields: [userBlockTable.hubID], references: [hubTable.id] }),
@@ -195,6 +208,7 @@ export const userBlockRelations = relations(userBlockTable, ({ one }) => ({
   }),
 }));
 
+//#region messageLinkRelations
 export const messageLinkRelations = relations(messageLinkTable, ({ one }) => ({
   app: one(appTable, {
     fields: [messageLinkTable.appID],
@@ -206,11 +220,11 @@ export const messageLinkRelations = relations(messageLinkTable, ({ one }) => ({
   }),
 }));
 
+//#region featureRelations
 export const featureRelations = relations(featureTable, ({ one }) => ({
   app: one(appTable, { fields: [featureTable.appID], references: [appTable.id] }),
 }));
 
-// Export your schema
 export const schema = {
   app: appTable,
   feature: featureTable,
