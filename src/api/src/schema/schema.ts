@@ -1,14 +1,6 @@
 import { relations } from 'drizzle-orm';
 
-import {
-  integer,
-  pgTable,
-  boolean,
-  timestamp,
-  json,
-  unique,
-  varchar,
-} from 'drizzle-orm/pg-core';
+import { integer, pgTable, boolean, timestamp, json, unique, varchar } from 'drizzle-orm/pg-core';
 
 //#region appTable
 export const appTable = pgTable('apps', {
@@ -118,12 +110,7 @@ export const userBlockTable = pgTable(
       .$onUpdate(() => new Date()),
   },
   (t) => ({
-    userID_appID_channelID_hubID: unique().on(
-      t.userID,
-      t.appID,
-      t.channelID,
-      t.hubID,
-    ),
+    userID_appID_channelID_hubID: unique().on(t.userID, t.appID, t.channelID, t.hubID),
   }),
 );
 
@@ -146,9 +133,7 @@ export const messageLinkTable = pgTable(
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     messageID: varchar('messageID', { length: 255 }),
-    channelID: varchar('channelID', { length: 255 }).references(
-      () => hubBridgeTable.id,
-    ),
+    channelID: varchar('channelID', { length: 255 }).references(() => hubBridgeTable.id),
     linkID: varchar('linkID', { length: 255 }),
     appID: integer('appID')
       .notNull()
