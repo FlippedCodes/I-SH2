@@ -27,7 +27,7 @@ global.client = new Client({ disableEveryone: true, intents });
 // global.config = require('./config.json');
 global.config = {};
 
-import packageDetails from './package.json' assert { type: "json" };
+import packageDetails from '../package.json' assert { type: "json" };
 global.config.package = packageDetails;
 
 global.DEBUG = process.env.NODE_ENV === 'development';

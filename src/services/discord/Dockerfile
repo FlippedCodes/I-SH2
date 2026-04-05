@@ -1,19 +1,24 @@
-# get node
-FROM node:19-buster-slim
+# Org script from https://bun.sh/guides/ecosystem/docker
 
-# RUN apk add --no-cache git
-
-# Create app directory
+# use the official Bun image
+# see all versions at https://hub.docker.com/r/oven/bun/tags
+FROM oven/bun:1 AS base
 WORKDIR /usr/src/app
 
-# Get app dependencies
-COPY package*.json ./
+# install dependencies into temp directory
+# this will cache them and speed up future builds
+FROM base AS install
+# install with --production (exclude devDependencies)
+COPY package.json bun.lock ./
+RUN bun install --production
 
-# building app
-RUN npm ci --only=production
-
-# Bundle app source
+# copy production dependencies and source code into final image
+FROM base AS release
+COPY --from=install /usr/src/app/node_modules ./node_modules
 COPY . .
 
-# start up the bot
-CMD [ "npm", "start" ]
+# know when running in a container
+ENV container=true
+
+# run the app
+ENTRYPOINT [ "bun", "start"]

@@ -8,7 +8,7 @@
       "type": "bun",
       "internalConsoleOptions": "neverOpen",
       "request": "launch",
-      "name": "Launch API",
+      "name": "API",
       "program": "./src/index.ts",
       "cwd": "${workspaceFolder}/src/api",
       "stopOnEntry": false,
@@ -17,10 +17,12 @@
     {
       "type": "bun",
       "internalConsoleOptions": "neverOpen",
-      "request": "attach",
-      "name": "Attach Bun",
-      "url": "ws://localhost:6499/",
-      "stopOnEntry": false
+      "request": "launch",
+      "name": "Service Discord",
+      "program": "./src/index.ts",
+      "cwd": "${workspaceFolder}/src/api",
+      "stopOnEntry": false,
+      "watchMode": false
     }
   ]
 }
