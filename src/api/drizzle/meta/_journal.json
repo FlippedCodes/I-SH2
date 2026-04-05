@@ -8,6 +8,20 @@
       "when": 1773099592430,
       "tag": "0000_right_bloodstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775345594543,
+      "tag": "0001_same_carnage",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1775348733818,
+      "tag": "0002_certain_frank_castle",
+      "breakpoints": true
     }
   ]
 }
