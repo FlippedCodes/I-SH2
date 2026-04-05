@@ -20,7 +20,7 @@
       "request": "launch",
       "name": "Service Discord",
       "program": "./src/index.ts",
-      "cwd": "${workspaceFolder}/src/api",
+      "cwd": "${workspaceFolder}/src/services/discord",
       "stopOnEntry": false,
       "watchMode": false
     }
