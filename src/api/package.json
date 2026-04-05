@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "start": "bun ./src/index.ts",
-    "db:migrate": "drizzle-kit generate --config drizzle.config.ts"
+    "db:migrate": "drizzle-kit generate --config drizzle.config.ts",
+    "test:watch": "bun test --watch"
   },
   "dependencies": {
     "@hono/swagger-ui": "^0.6.1",
