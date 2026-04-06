@@ -4,6 +4,7 @@ import { logger } from 'hono/logger';
 import { basicAuth } from 'hono/basic-auth';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { drizzle } from 'drizzle-orm/node-postgres';
+import { Connection } from 'rabbitmq-client';
 
 import packageInf from '../package.json';
 import v1 from './routes/v1/index';
@@ -14,6 +15,8 @@ export const db = drizzle(
   `postgresql://${process.env.DBusername}:${process.env.DBpassword}@${process.env.DBhost}:${parseInt(<string>process.env.DBport, 10) || 5432}/${process.env.DBusername}`,
   { casing: 'camelCase', schema },
 );
+
+export const rabbit = new Connection(`amqp://${process.env.MBusername}:${process.env.MBpassword}@${process.env.MBhost}:${parseInt(<string>process.env.MBport, 10) || 5672}`);
 
 const DEBUG = process.env.NODE_ENV === 'development';
 
