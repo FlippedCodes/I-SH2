@@ -297,6 +297,8 @@ apps.openapi(
 
     await db.delete(appTable).where(eq(appTable.name, appName));
 
+    // TODO: Delete MB queue
+
     return _c_.json({ message: 'App successfully deleted' }, 200);
   },
 );
