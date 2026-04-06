@@ -166,7 +166,7 @@ export const hubRelations = relations(hubTable, ({ many, one }) => ({
     fields: [hubTable.id],
     references: [hubSettingTable.id],
   }),
-  app: one(appTable, { fields: [hubTable.id], references: [appTable.id] }),
+  app: one(appTable, { fields: [hubTable.appID], references: [appTable.id] }),
 }));
 
 //#region userToSAgreeRelations
