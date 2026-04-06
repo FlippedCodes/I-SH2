@@ -1,11 +1,14 @@
 // schema/zodSchemas.ts
 import { createSelectSchema } from 'drizzle-zod';
-import { featureTable, appTable } from './schema/schema';
+import { featureTable, appTable, hubTable, hubSettingTable } from './schema/schema';
 
 export const featureSchemaFull = createSelectSchema(featureTable);
 export const appSchemaFull = createSelectSchema(appTable);
+export const hubSchemaFull = createSelectSchema(hubTable);
+export const hubSettingSchemaFull = createSelectSchema(hubSettingTable);
 
-// Create filtered versions without createdAt and updatedAt
+// Create filtered schemas, that are the data, that gets requested off the user
+
 export const appWithFeaturesSchema = featureSchemaFull.omit({
   appID: true,
   createdAt: true,
@@ -14,6 +17,17 @@ export const appWithFeaturesSchema = featureSchemaFull.omit({
 export const appSchema = appSchemaFull.omit({
   id: true,
   delaunch: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const hubSchema = hubSchemaFull.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export const hubSettingSchema = hubSettingSchemaFull.omit({
+  id: true,
   createdAt: true,
   updatedAt: true,
 });

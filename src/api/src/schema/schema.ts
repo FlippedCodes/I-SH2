@@ -213,5 +213,9 @@ export const featureRelations = relations(featureTable, ({ one }) => ({
 export const schema = {
   app: appTable,
   feature: featureTable,
+  hub: hubTable,
+  hubSetting: hubSettingTable,
+  // relations aren't actively used, bur required to join the tables on queries
   appRelations,
+  hubRelations,
 };
