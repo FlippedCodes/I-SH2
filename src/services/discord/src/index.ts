@@ -77,3 +77,15 @@ rabbit.createConsumer({
 
 manager.spawn();
 
+//#region Delaunch App
+async function cleanExit() {
+  const apiResponse = await fetch(`${process.env.apiEndpoint}/v1/apps/discord`, { method: 'DELETE' });
+  if (!apiResponse.ok) process.exit(1);
+  // FIXME: Logs don't show up in logs
+  // if (!apiResponse.ok) throw new Error(`⚠️ Unable to mark app as delaunched: ${apiResponse.statusText}`);
+  // log(console.info, `✅ Successfully delaunched app with API!`);
+  // setTimeout(() => process.exit(0), 500).unref();
+  process.exit(0);
+}
+process.on('SIGTERM', () => cleanExit());
+process.on('SIGINT', () => cleanExit());
