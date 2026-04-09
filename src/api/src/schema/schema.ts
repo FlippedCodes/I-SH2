@@ -62,7 +62,7 @@ export const hubBridgeTable = pgTable(
       .references(() => appTable.id),
     hubID: integer('hubID')
       .notNull()
-      .references(() => hubTable.id),
+      .references(() => hubTable.id, { onDelete: 'cascade' }),
     additionalData: json('additionalData'),
     createdAt: timestamp('createdAt').notNull().defaultNow(),
     updatedAt: timestamp('updatedAt')
@@ -79,7 +79,7 @@ export const hubBridgeTable = pgTable(
 export const hubSettingTable = pgTable('hubSettings', {
   id: integer('id')
     .primaryKey()
-    .references(() => hubTable.id),
+    .references(() => hubTable.id, { onDelete: 'cascade' }),
   allowInvites: boolean('allowInvites').notNull().default(false),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt')

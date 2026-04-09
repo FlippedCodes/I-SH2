@@ -6,7 +6,8 @@
     "words": [
         "delaunch",
         "delaunched",
-        "Healthcheck"
+        "Healthcheck",
+        "hubname"
     ],
     "ignoreWords": [],
     "import": []
