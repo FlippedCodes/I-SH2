@@ -2,7 +2,7 @@ import { ShardingManager, Constants } from 'discord.js';
 
 import { Connection, ConsumerStatus } from 'rabbitmq-client';
 
-const log = (logger: Console['debug' | 'info'], ...args: any[]) =>
+const log = (logger: Console['debug' | 'info' | 'error'], ...args: any[]) =>
   logger('[SHARD MGR]', ...args);
 
 //#region Init
@@ -53,12 +53,7 @@ switch (apiResponse.status) {
 }
 
 //#region Spawn shards and setup queue
-manager.on('shardCreate', (shard) => {
-  log(console.info, `Launched shard ${shard.id}`);
-  
-  shard.on('ready', () => {
-  });
-});
+manager.on('shardCreate', (shard) => log(console.info, `Launched shard ${shard.id}`));
 
 rabbit.createConsumer({
     queue: 'service_discord',
