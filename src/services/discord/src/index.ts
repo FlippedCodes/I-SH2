@@ -80,6 +80,11 @@ manager.spawn();
 //#region Delaunch App
 async function cleanExit() {
   const apiResponse = await fetch(`${process.env.apiEndpoint}/v1/apps/discord`, { method: 'DELETE' });
+  
+  // Workaround: bun process doesn't seem to exit, when shard manager exists
+  manager.respawn = false;
+  manager.shards.forEach((shard) => shard.kill());
+  
   if (!apiResponse.ok) process.exit(1);
   // FIXME: Logs don't show up in logs
   // if (!apiResponse.ok) throw new Error(`⚠️ Unable to mark app as delaunched: ${apiResponse.statusText}`);
