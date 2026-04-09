@@ -132,6 +132,9 @@ apps.openapi(
     // TODO: after creation, queue with correct routing also has to be created
     const appData = _c_.req.valid('json');
 
+    // TODO: since the internal API is also registered as an app, overriding needs to be forbidden.
+    // it represents the ToS and Privacy policy of the app itself, as well as tracking it of all users
+
     // Check if app with this name already exists
     const existingApp = await db.query.app.findFirst({
       where: eq(appTable.name, appData.name),
